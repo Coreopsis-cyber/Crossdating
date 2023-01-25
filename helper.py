@@ -1,31 +1,37 @@
 import pandas as pd
 import numpy as np
+import logging
 # TODO: Add appropriate commenting, checking for edge cases and logging
 
 
 def read_csv_to_dataframe(filename):
+    logging.info("Collection data from selected file is being attempted. ")
     try:
         df = pd.read_csv(filename, index_col=0)
+        logging.info("Collection data from selected file is successful.")
         return df
 
     except FileNotFoundError:
         print("File not found. Please check the file is in the current working directory and has been spelt correctly")
-
+        logging.error("File not found, attempt is unsuccessful.")
     except pd.errors.EmptyDataError:
         print("No data.")
+        logging.error("File contained no data, attempt is unsuccessful.")
 
     except pd.errors.ParserError:
-        print("Parse error.")
+        print("Parse error, attempt is unsuccessful.")
+        logging.error("Parse error.")
 
 
 # TODO: Find a way to combine the master chronology and the sample dataframe
 # TODO: Find a way of specifying what is the sample and what is part of the master chronology
 def master_chronology(df):
-    """Creating a master chronology from 20 samples. """
+    """Creating a master chronology by averaging the rows of 20 samples. """
+    logging.info("Creation of a master chronology is being attempted.")
     df_master = df.iloc[:, [i for i in range(df.shape[1]) if i <= 19]].copy()
 
     df_master['master_chronology'] = df_master.mean(axis=1)
-
+    logging.info("Creation of a master chronology is successful.")
     return df_master
 
 
