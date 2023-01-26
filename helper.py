@@ -25,6 +25,7 @@ def read_csv_to_dataframe(filename):
 
 # TODO: Find a way to combine the master chronology and the sample dataframe
 # TODO: Find a way of specifying what is the sample and what is part of the master chronology
+# TODO: Integrate this with other methods so that errors can be caught
 def master_chronology(df):
     """Creating a master chronology by averaging the rows of 20 samples. """
     logging.info("Creation of a master chronology is being attempted.")
