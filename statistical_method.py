@@ -33,8 +33,13 @@ def t_values(pairs):
     for i in range(len(pairs)):
         (seg1, seg2) = pairs[i]
         if len(seg1) == len(seg2) == 10:
+            # TODO: will review other methods so this can be removed.
             r = scipy.stats.pearsonr(seg1, seg2)[0]
             n = min(len(seg1), len(seg2))
             t = (r - np.sqrt(n - 2)) / np.sqrt(1 - (r * r))
             t_vals[t] = (seg1, seg2)
     return t_vals
+
+
+def sig_t_val(t_vals):
+    sig = list(t_vals.keys())
