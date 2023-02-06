@@ -1,4 +1,4 @@
-import pandas as pd
+from pandas import read_csv, errors
 import numpy as np
 import logging
 # TODO: Add appropriate commenting, checking for edge cases and logging
@@ -7,18 +7,18 @@ import logging
 def read_csv_to_dataframe(filename):
     logging.info("Collection data from selected file is being attempted. ")
     try:
-        df = pd.read_csv(filename, index_col=0)
+        df = read_csv(filename, index_col=0)
         logging.info("Collection data from selected file is successful.")
         return df
 
     except FileNotFoundError:
         print("File not found. Please check the file is in the current working directory and has been spelt correctly")
         logging.error("File not found, attempt is unsuccessful.")
-    except pd.errors.EmptyDataError:
+    except errors.EmptyDataError:
         print("No data.")
         logging.error("File contained no data, attempt is unsuccessful.")
 
-    except pd.errors.ParserError:
+    except errors.ParserError:
         print("Parse error, attempt is unsuccessful.")
         logging.error("Parse error.")
 
