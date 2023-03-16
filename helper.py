@@ -1,6 +1,10 @@
 from pandas import read_csv, errors
+from wotan import flatten
 import numpy as np
 import logging
+import statsmodels.api as sm
+from patsy import dmatrices
+
 # TODO: Add appropriate commenting, checking for edge cases and logging
 
 
@@ -47,36 +51,6 @@ def convert_dataframe_to_array(df):
     return samples
 
 
-def split_with_overlap(array, len_chunk, len_sep=1):
-    """Returns a matrix of all full overlapping chunks of the input `array`, with a chunk
-    length of `len_chunk` and a separation length of `len_sep`. Begins with the first full
-    chunk in the array.  """
-
-    n_arrays = int(np.ceil((array.size - len_chunk + 1) / len_sep))
-
-    array_matrix = np.tile(array, n_arrays).reshape(n_arrays, -1)
-
-    columns = np.array(((len_sep * np.arange(0, n_arrays)).reshape(n_arrays, -1) + np.tile(
-        np.arange(0, len_chunk), n_arrays).reshape(n_arrays, -1)), dtype=np.intp)
-
-    rows = np.array((np.arange(n_arrays).reshape(n_arrays, -1) + np.tile(
-        np.zeros(len_chunk), n_arrays).reshape(n_arrays, -1)), dtype=np.intp)
-
-    return array_matrix[rows, columns]
-
-
-def divide_array_into_segments(samples):
-    segments = {}
-    length = len(samples)
-
-    for i in range(length):
-        g = split_with_overlap(samples[i], 10, 7)
-        i += 1
-        segments[i] = g
-
-    return segments
-
-
 def convert_dataframe_to_list(df):
     samples = []
 
@@ -88,16 +62,44 @@ def convert_dataframe_to_list(df):
 
     return samples
 
+def create_master_chronology(df, samples):
+    master_df = df[:19]
+    flatten_lc, trend_lc = flatten(time, flux, window_length=0.5, return_trend=True)
+
 
 def divide_list_to_segments(samples, size, step):
     """Divides a list of lists into a dictionary of lists of smaller lists given
        a size of segments and the step between segments. Recommended size is 10 and
        step is 7."""
     segments = {}
-
     length = len(samples)
     for j in range(length):
         segments[j] = ([samples[j][i: i + size] for i in range(0, len(samples[j]), step)])
         j += 1
+    # print(segments[0])
+    # print(segments[1])
 
-    return segments
+    short = []
+
+    for i in range(len(segments)):
+        for j in range(len(segments[i])):
+            if len(segments[i][j]) != 10:
+                # print(segments[i][j])
+                short.append(segments[i][j])
+                j += 1
+            else:
+                continue
+        i += 1
+
+    # print(short)
+    segments0 = [x for x in segments[0] if x not in short]
+    segments1 = [x for x in segments[1] if x not in short]
+
+    # print(segments0)
+
+    segments[0] = segments0
+    segments[1] = segments1
+    segments[0][-1]
+    assert len(segments[0][-1]) == 10
+    assert len(segments[1][-1]) == 10
+    return segments, len(segments[1])
