@@ -184,6 +184,6 @@ if __name__ == "__main__":
             #Add count graph
 
         elif event == 'Machine Learing Method':
-
+            break
 
     window.close()
