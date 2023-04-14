@@ -3,6 +3,7 @@ import logging
 
 
 def read_csv_to_dataframe(filename):
+    """Method that creates a dataframe from a csv file."""
     logging.info("Collection data from selected file is being attempted. ")
     try:
         df = read_csv(filename, index_col=0)
@@ -22,7 +23,7 @@ def read_csv_to_dataframe(filename):
 
 
 def rename_dataframe(df):
-
+    """Renames the labels of the dataframe to maintain consistency."""
     assert len(df.columns) == 2, "Dataframe does not contain 2 columns please reenter a new csv in the correct form."
     column = list(df.columns)
     df = df.rename({column[0]: "master_chronology", column[1]: "sample"}, axis=1)
@@ -30,8 +31,8 @@ def rename_dataframe(df):
 
 
 def convert_dataframe_to_list(df):
+    """Removes the padding from the columns in a dataframe and adds the non zero values of the column to a list."""
     samples = []
-
     for col in df.columns:
 
         col_list = df[col].tolist()
@@ -44,7 +45,7 @@ def convert_dataframe_to_list(df):
 def divide_list_to_segments(samples, size):
     """Divides a list of lists into a dictionary of lists of smaller lists given
        a size of segments and the step between segments. Recommended size is 10 and
-       step is 7."""
+       step is 1."""
     segments = {}
     length = len(samples)
     for j in range(length):

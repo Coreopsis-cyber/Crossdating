@@ -28,6 +28,8 @@ def t_values(pairs, size):
 
 
 def sig_t_val(t_vals, standard_div_no, stride, consecutive):
+    """Method finds outlying values of t values and returns a list for which there is a consecutive number of t
+    values which are outlying."""
     sig = list(t_vals.keys())
     for i in range(len(sig)):
         sig[i] = float(sig[i].split()[-1])
@@ -57,10 +59,10 @@ def sig_t_val(t_vals, standard_div_no, stride, consecutive):
         except:
             continue
     if len(contender) == 0:
-        print("Method returned no outliers with 8 consecutive outliers for any start positions. This may mean there "
-              "are errors in the sample or this sample is not a match for the inputted master chronology. Adjusting "
-              "previous constraints such as segment length and the standard deviation number may help identify the "
-              "issue.")
+        print(f"Method returned no outliers with {consecutive} consecutive outliers for any start positions. This may "
+              "mean there are errors in the sample or this sample is not a match for the inputted master chronology."
+              " Adjusting previous constraints such as segment length and the standard deviation number may help"
+              " identify the issue.")
     else:
         for i in range(len(contender)):
             top_contenders.append(str(sig.index(contender[i])) + ' ' + str(contender[i]))
@@ -89,6 +91,8 @@ def top_pairs(top_contenders, t_vals, samples, startdate):
 
 
 def adding_padding(df, samples, start_year, index):
+    """Adds the correct amount of padding for a given start year and adds the resulting list into the original
+    dataframe. """
     start = start_year[index]
     beginning = df.index[0]
     ending = df.index[-1]
