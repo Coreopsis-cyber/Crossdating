@@ -1,5 +1,6 @@
 from collections import Counter
 import numpy as np
+import pandas as pd
 
 
 def matching_pairs(segments):
@@ -69,7 +70,7 @@ def sig_t_val(t_vals, standard_div_no, stride, consecutive):
     return top_contenders
 
 
-def top_pairs(top_contenders, t_vals, samples, startdate):
+def top_pairs(df, top_contenders, t_vals, samples, startdate):
     """Take the list of outlying t values, a dictionary of pairs between a sample and the
     master chronology and an index for which chronologies should be specified"""
     if len(top_contenders) == 0:
@@ -80,39 +81,38 @@ def top_pairs(top_contenders, t_vals, samples, startdate):
         start_year = []
         for i in range(len(top_contenders)):
             (master_seg, sample_seg) = t_vals[top_contenders[i]]
-            start_year.append(samples[0].index(master_seg[0]) - samples[1].index(sample_seg[0]))
+            start_year.append(df.first_valid_index() + samples[0].index(master_seg[0]) - samples[1].index(sample_seg[0]))
         start_year_dic = Counter(start_year)
         number = start_year_dic.most_common(startdate)
         top_start_years = []
         for i in range(len(number)):
             top_start_years.append(start_year_dic.most_common(startdate)[i][0])
 
-        return top_start_years
+        return top_start_years, start_year_dic
 
 
-def adding_padding(df, samples, start_year, index):
+def adding_padding(df, samples, start_year, ind, output):
     """Adds the correct amount of padding for a given start year and adds the resulting list into the original
     dataframe. """
-    start = start_year[index]
+    start = start_year[ind]
+    print(start)
     beginning = df.index[0]
     ending = df.index[-1]
-    padding = start
+    padding = start - beginning
     padding_end = len(df.index) - (padding + len(samples[1]))
     chronology = []
     for i in range(padding):
         chronology.append(None)
-        i += 1
     for j in range(len(samples[1])):
         chronology.append(samples[1][j])
-        j += 1
     if padding_end > 0:
         for k in range(padding_end):
             chronology.append(None)
-            k += 1
     else:
         deletion = int(len(chronology) - (ending - beginning)) - 1
         for x in range(deletion):
             chronology.pop()
-            x += 1
-    df['Aligned_' + str(index)] = chronology
+    print(chronology)
+    output['Aligned_' + str(ind)] = chronology
+    return output
 

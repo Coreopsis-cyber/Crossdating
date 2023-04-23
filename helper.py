@@ -4,22 +4,15 @@ import logging
 
 def read_csv_to_dataframe(filename):
     """Method that creates a dataframe from a csv file."""
-    logging.info("Collection data from selected file is being attempted. ")
     try:
         df = read_csv(filename, index_col=0)
-        logging.info("Collection data from selected file is successful.")
         return df
-
     except FileNotFoundError:
         print("File not found. Please check the file is in the current working directory and has been spelt correctly")
-        logging.error("File not found, attempt is unsuccessful.")
     except errors.EmptyDataError:
         print("No data.")
-        logging.error("File contained no data, attempt is unsuccessful.")
-
     except errors.ParserError:
         print("Parse error, attempt is unsuccessful.")
-        logging.error("Parse error.")
 
 
 def rename_dataframe(df):
