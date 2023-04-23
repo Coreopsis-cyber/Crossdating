@@ -298,7 +298,6 @@ def adding_padding(df, samples, start_year, ind, output):
     """Adds the correct amount of padding for a given start year and adds the resulting list into the original
     dataframe. """
     start = start_year.most_common(ind)[0][0]
-    print(start)
     beginning = df.index[0]
     ending = df.index[-1]
     padding = start - beginning
@@ -315,7 +314,5 @@ def adding_padding(df, samples, start_year, ind, output):
         deletion = int(len(chronology) - (ending - beginning)) - 1
         for x in range(deletion):
             chronology.pop()
-    print(chronology)
-    print(len(chronology))
     output['Aligned_' + str(0)] = chronology
     return output

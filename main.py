@@ -2,9 +2,7 @@ import PySimpleGUI as sg
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import seaborn as sns
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
-from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPClassifier
 from sklearn.utils import resample
@@ -25,7 +23,7 @@ if __name__ == "__main__":
 
     def addlabels(x, y):
         for i in range(len(x)):
-            plt.text(i, y[i]//2, y[i], ha = 'center')
+            plt.text(i, y[i]//2, y[i], ha='center')
 
 
     def draw_figure_w_toolbar(canvas, fig, canvas_toolbar):
@@ -107,7 +105,7 @@ if __name__ == "__main__":
             [sg.T('Figure:')],
             [sg.Column(
                 layout=[
-                    [sg.Canvas(key='fig_cv', size=(3500 * 2, 2000))]
+                    [sg.Canvas(key='fig_cv', size=(3500 * 2, 1500))]
                 ],
                 background_color='#DAE0E6',
                 pad=(0, 0)
@@ -265,14 +263,14 @@ if __name__ == "__main__":
                            range(len(start_years.most_common()))])
             plt.figure(2)
             #plt.pie(values, labels=labels, colors=sns.color_palette('Set2'), autopct='%1.1f%%')
-            plt.title("Bar chart of all possible start years from crossdating program.", fontsize=16)
-            plt.xlabel("Start year", fontsize=12)
-            plt.ylabel("Counts", fontsize=12)
+            plt.title("Bar chart of all possible start years from crossdating program.", fontsize=10)
+            plt.xlabel("Start year", fontsize=8)
+            plt.ylabel("Counts", fontsize=8)
             plt.bar(labels, values, color="#40B0A6")
             addlabels(labels, values)
             fig2 = plt.gcf()
             DPI2 = fig2.get_dpi()
-            fig2.set_size_inches(1000 * 2 / float(DPI2), 800 / float(DPI2))
+            fig2.set_size_inches(1000 * 2 / float(DPI2), 790 / float(DPI2))
             draw_figure_w_toolbar(window8['fig_cv2'].TKCanvas, fig2, window8['controls_cv2'].TKCanvas)
         elif event == 'Machine Learning Method':
             plt.figure().clear()
@@ -438,7 +436,6 @@ if __name__ == "__main__":
                 start_year.append(
                     df.first_valid_index() + samples[0].index(master_seg[0]) - samples[1].index(sample_seg[0]))
             start_years = Counter(start_year)
-            print(start_years)
             output = df.copy()
             output = machine_learning_method.adding_padding(df, samples, start_years, 1, output)
             window10['-PBAR2-'].update(current_count=100)
