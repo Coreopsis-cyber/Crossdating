@@ -47,7 +47,7 @@ if __name__ == "__main__":
                      "about your "
                      "data in order this program to complete."), sg.Text('      ', k='-OUTPUT-')],
             [sg.Button('Upload CSV file'), sg.Button('Exit')]]
-        return sg.Window('Crossdating App', layout, size=(605, 100), finalize=True)
+        return sg.Window('Crossdating App', layout, resizable=True, size=(605, 100), finalize=True)
 
 
     def make_win2():
@@ -59,7 +59,7 @@ if __name__ == "__main__":
                 "length ")],
             [sg.T("")], [sg.Text("Choose a file: "), sg.Input(), sg.FileBrowse(key="-IN-")],
             [sg.Button("Import"), sg.Button('Exit')]]
-        return sg.Window('Crossdating App', layout, size=(700, 230), finalize=True)
+        return sg.Window('Crossdating App', layout, resizable=True,  size=(700, 230), finalize=True)
 
 
     def make_win3():
@@ -67,7 +67,7 @@ if __name__ == "__main__":
                            "statistical method. Both will give further options to save the \nresults or graph them.")],
                   [sg.Button("Statistical Method"),
                    sg.Button("Machine Learning Method")]]
-        return sg.Window('Crossdating App', layout, size=(605, 120), finalize=True)
+        return sg.Window('Crossdating App', layout, resizable=True,  size=(605, 120), finalize=True)
 
 
     def make_win4():
@@ -86,7 +86,7 @@ if __name__ == "__main__":
                       [sg.Text(labels[i], size=size), sg.Input(default[i], key=keys[i].split()[0])]
                       for i in range(len(labels))] + [[sg.Push(), sg.Button("Submit")]],
                   ]
-        return sg.Window('Crossdating App', layout, size=(1200, 250), finalize=True)
+        return sg.Window('Crossdating App', layout, resizable=True, size=(1200, 250), finalize=True)
 
 
     def make_win5():
@@ -94,7 +94,7 @@ if __name__ == "__main__":
                   [sg.ProgressBar(100, orientation='h', expand_x=True, key='-PBAR-', size=(20, 20))],
                   [sg.Text('', key='-OUT-', enable_events=True, justification='center', expand_x=True)],
                   [sg.Button('Main Menu'), sg.Button('Output Data'), sg.Button('Exit')]]
-        return sg.Window('Crossdating App', layout, size=(600, 160), finalize=True)
+        return sg.Window('Crossdating App', layout, resizable=True, size=(600, 160), finalize=True)
 
 
     def make_win6():
@@ -121,7 +121,7 @@ if __name__ == "__main__":
             [sg.Text("Thank you for using this crossdating application, if you would like to continue to use this  ")],
             [sg.Button("Statistical Method"),
              sg.Button("Machine Learning Method")]]
-        return sg.Window('Crossdating App', layout, size=(605, 120), finalize=True)
+        return sg.Window('Crossdating App', layout, resizable=True, size=(605, 120), finalize=True)
 
 
     def make_win8():
@@ -152,7 +152,7 @@ if __name__ == "__main__":
                 "\ncolumn and is required to have padding so all the columns are the same length ")],
             [sg.T("")], [sg.Text("Choose a file: "), sg.Input(), sg.FolderBrowse(key='-FOLDER-')],
             [sg.Button("Import Training data"), sg.Button('Exit')]]
-        return sg.Window('Crossdating App', layout, size=(800, 230), finalize=True)
+        return sg.Window('Crossdating App', layout, resizable=True, size=(800, 230), finalize=True)
 
 
     def make_win10():
@@ -160,7 +160,7 @@ if __name__ == "__main__":
                   [sg.ProgressBar(100, orientation='h', expand_x=True, key='-PBAR2-', size=(20, 20))],
                   [sg.Text('', key='-OUT2-', enable_events=True, justification='center', expand_x=True)],
                   [sg.Button('Main Menu'), sg.Button('Output Data'), sg.Button('Exit')]]
-        return sg.Window('Crossdating App', layout, size=(600, 160), finalize=True)
+        return sg.Window('Crossdating App', layout, resizable=True, size=(600, 160), finalize=True)
 
 
     sg.set_options(font=('Arial Bold', 16))
