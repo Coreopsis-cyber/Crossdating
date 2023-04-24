@@ -106,7 +106,7 @@ if __name__ == "__main__":
             [sg.T('Figure:')],
             [sg.Column(
                 layout=[
-                    [sg.Canvas(key='fig_cv', size=(3500 * 2, 1500))]
+                    [sg.Canvas(key='fig_cv', size=(3500 * 2, 1000))]
                 ],
                 background_color='#DAE0E6',
                 pad=(0, 0)
