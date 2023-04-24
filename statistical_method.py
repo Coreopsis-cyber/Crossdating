@@ -1,6 +1,5 @@
 from collections import Counter
 import numpy as np
-import pandas as pd
 
 
 def matching_pairs(segments):
@@ -113,4 +112,3 @@ def adding_padding(df, samples, start_year, ind, output):
             chronology.pop()
     output['Aligned_' + str(ind)] = chronology
     return output
-

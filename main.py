@@ -21,9 +21,9 @@ class Toolbar(NavigationToolbar2Tk):
 
 if __name__ == "__main__":
 
-    def addlabels(x, y):
-        for i in range(len(x)):
-            plt.text(i, y[i]//2, y[i], ha='center')
+    def add_labels(x, y):
+        for label in range(len(x)):
+            plt.text(label, y[label] // 2, y[label], ha='center')
 
 
     def draw_figure_w_toolbar(canvas, fig, canvas_toolbar):
@@ -72,7 +72,8 @@ if __name__ == "__main__":
 
     def make_win4():
         labels = ('Segment size the sample is split into (default: 10 years):',
-                  'The number of standard deviations from the mean that is classified as an outlier (default: 3 standard diviations):',
+                  'The number of standard deviations from the mean that is classified as an outlier (default: 3 '
+                  'standard diviations):',
                   'Number of consecutive outliers considered significant (default: 8 consecutive outliers):',
                   'Number of start years the program outputs (default: 1, the highest likely year):')
         keys = ('-SEGMENT-', '-STANDDEV-', '-OUTLIERS-', '-STARTDATE-')
@@ -112,7 +113,7 @@ if __name__ == "__main__":
             )],
             [sg.Button("Export to CSV"), sg.Button("Display Bar Chart of Start years"), sg.Button("Main Menu"),
              sg.Button("New Chronology"), sg.Button("Exit")]]
-        return sg.Window('Crossdating App', layout, resizable=True, finalize=True, size=(9000, 1000))
+        return sg.Window('Crossdating App', layout, resizable=True, finalize=True, size=(9000, 850))
 
 
     def make_win7():
@@ -183,7 +184,6 @@ if __name__ == "__main__":
             window2 = None
             window3 = make_win3()
         elif event == 'Statistical Method':
-            plt.figure().clear()
             window.close()
             window3 = None
             window4 = make_win4()
@@ -224,7 +224,7 @@ if __name__ == "__main__":
             window.close()
             window5 = None
             window6 = make_win6()
-            plt.figure(1)
+            plt.figure()
             plt.plot(output["master_chronology"], color="#40B0A6")
             plt.plot(output['Aligned_0'], color="#E1BE6A")
             plt.legend(['master chronology', 'sample'], fontsize=10)
@@ -236,7 +236,7 @@ if __name__ == "__main__":
             plt.title("Detrended values of a master chronology and a sample.", fontsize=16)
             fig = plt.gcf()
             DPI = fig.get_dpi()
-            fig.set_size_inches(1000 * 2 / float(DPI), 600 / float(DPI))
+            fig.set_size_inches(1150 * 2 / float(DPI), 600 / float(DPI))
             draw_figure_w_toolbar(window6['fig_cv'].TKCanvas, fig, window6['controls_cv'].TKCanvas)
         elif event == "Export to CSV":
             window.close()
@@ -251,29 +251,29 @@ if __name__ == "__main__":
             window5 = None
             window2 = make_win2()
         elif event == 'Display Bar Chart of Start years':
+            plt.clf()
             window.close()
             window5 = None
             window8 = make_win8()
             # Get the Keys and store them in a list
             labels = list([start_years.most_common()[item][0] for item in
-                           range(len(start_years.most_common()))])
+                           range(len(start_years.most_common(20)))])
             labels = [str(label) for label in labels]
             # Get the Values and store them in a list
             values = list([start_years.most_common()[item][1] for item in
-                           range(len(start_years.most_common()))])
-            plt.figure(2)
-            #plt.pie(values, labels=labels, colors=sns.color_palette('Set2'), autopct='%1.1f%%')
+                           range(len(start_years.most_common(20)))])
+            plt.figure()
+            # plt.pie(values, labels=labels, colors=sns.color_palette('Set2'), autopct='%1.1f%%')
             plt.title("Bar chart of all possible start years from crossdating program.", fontsize=10)
             plt.xlabel("Start year", fontsize=8)
             plt.ylabel("Counts", fontsize=8)
             plt.bar(labels, values, color="#40B0A6")
-            addlabels(labels, values)
+            add_labels(labels, values)
             fig2 = plt.gcf()
             DPI2 = fig2.get_dpi()
             fig2.set_size_inches(1000 * 2 / float(DPI2), 790 / float(DPI2))
             draw_figure_w_toolbar(window8['fig_cv2'].TKCanvas, fig2, window8['controls_cv2'].TKCanvas)
         elif event == 'Machine Learning Method':
-            plt.figure().clear()
             window.close()
             window6 = None
             window9 = make_win9()
@@ -292,7 +292,6 @@ if __name__ == "__main__":
                     name = helper.read_csv_to_dataframe(data)
                     training_data.append(name)
                 except:
-
                     continue
                 i += 1
             window10['-PBAR2-'].update(current_count=0)

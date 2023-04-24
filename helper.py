@@ -27,7 +27,6 @@ def convert_dataframe_to_list(df):
     """Removes the padding from the columns in a dataframe and adds the non zero values of the column to a list."""
     samples = []
     for col in df.columns:
-
         col_list = df[col].tolist()
         cleaned_list = [x for x in col_list if x == x]
         samples.append(cleaned_list)
