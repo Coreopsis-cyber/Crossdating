@@ -7,9 +7,21 @@ In order to run this program the following pacakges must be installed by enterin
 
 Packages:
 ``` 
-pip install PySimpleGUI
-pip install Matplotlib
-pip install Pandas
-pip install scikit-learn
+  pip install PySimpleGUI
+
+```
+then 
+``` 
+  pip install Matplotlib
+
+```
+then
+``` 
+  pip install pandas
+
+```
+finally 
+``` 
+  pip install scikit-learn
 
 ```
