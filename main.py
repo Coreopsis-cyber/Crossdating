@@ -12,6 +12,7 @@ from os import listdir
 import helper
 import machine_learning_method
 import statistical_method
+import cProfile
 
 
 class Toolbar(NavigationToolbar2Tk):
@@ -85,7 +86,8 @@ if __name__ == "__main__":
                   [
                       [sg.Text(labels[i], size=size), sg.Input(default[i], key=keys[i].split()[0])]
                       for i in range(len(labels))] + [[sg.Push(), sg.Button("Submit")]],
-                  ]
+                  [sg.Text("WARNING: Please make sure the segment size x  consecutive outliers is less than the length of the sample chronology.")]]
+
         return sg.Window('Crossdating App', layout, resizable=True, size=(1200, 250), finalize=True)
 
 
@@ -106,21 +108,23 @@ if __name__ == "__main__":
             [sg.T('Figure:')],
             [sg.Column(
                 layout=[
-                    [sg.Canvas(key='fig_cv', size=(3500 * 2, 1000))]
+                    [sg.Canvas(key='fig_cv', size=[3500 * 2, 3800])]
                 ],
-                background_color='#DAE0E6',
-                pad=(0, 0)
+                pad=(0, 0),
             )],
             [sg.Button("Export to CSV"), sg.Button("Display Bar Chart of Start years"), sg.Button("Main Menu"),
              sg.Button("New Chronology"), sg.Button("Exit")]]
-        return sg.Window('Crossdating App', layout, resizable=True, finalize=True, size=(9000, 850))
+        return sg.Window('Crossdating App', layout, resizable=True, finalize=True, size=(9000, 1200))
 
 
     def make_win7():
         layout = [
-            [sg.Text("Thank you for using this crossdating application, if you would like to continue to use this  ")],
-            [sg.Button("Statistical Method"),
-             sg.Button("Machine Learning Method")]]
+            [sg.Text("Thank you for using this crossdating application, your output has been saved.\n"
+                     "If you would like to continue to please use the buttons below.")],
+            [sg.Button("New Chronology"),
+             sg.Button("Statistical Method"),
+             sg.Button("Machine Learning Method")],
+             sg.Button("Exit")]
         return sg.Window('Crossdating App', layout, resizable=True, size=(605, 120), finalize=True)
 
 
@@ -133,7 +137,7 @@ if __name__ == "__main__":
             [sg.T('Figure:')],
             [sg.Column(
                 layout=[
-                    [sg.Canvas(key='fig_cv2', size=(3500 * 2, 3500))]
+                    [sg.Canvas(key='fig_cv2', size=(3700 * 2, 3500))]
                 ],
                 background_color='#DAE0E6',
                 pad=(0, 0)
@@ -146,17 +150,18 @@ if __name__ == "__main__":
     def make_win9():
         layout = [
             [sg.T(
-                "Please upload a folder of CSV files containing a 3 columns\nto train the method, please do not use the "
-                "testing data:\n1) The index of years for a master chronology\n2) The master chronology correctly "
+                "Please upload a folder of CSV files to train the method,\nplease do not use the "
+                "testing data.\n The CSV files should contain 3 columns given below:\n1) The index of years for a "
+                "master chronology\n2) The master chronology correctly "
                 "indexed by the years column\n3) The sample chronology, this can be added at any point in the "
-                "\ncolumn and is required to have padding so all the columns are the same length ")],
+                "\ncolumn and is required to have padding so all the columns are the same length")],
             [sg.T("")], [sg.Text("Choose a file: "), sg.Input(), sg.FolderBrowse(key='-FOLDER-')],
             [sg.Button("Import Training data"), sg.Button('Exit')]]
-        return sg.Window('Crossdating App', layout, resizable=True, size=(800, 230), finalize=True)
+        return sg.Window('Crossdating App', layout, resizable=True, size=(800, 260), finalize=True)
 
 
     def make_win10():
-        layout = [[sg.Text("Computation is occuring please wait. This may take up to 20 minutes.")],
+        layout = [[sg.Text("Computation is occuring please wait. This may take up to 15 minutes.")],
                   [sg.ProgressBar(100, orientation='h', expand_x=True, key='-PBAR2-', size=(20, 20))],
                   [sg.Text('', key='-OUT2-', enable_events=True, justification='center', expand_x=True)],
                   [sg.Button('Main Menu'), sg.Button('Output Data'), sg.Button('Exit')]]
@@ -165,8 +170,8 @@ if __name__ == "__main__":
 
     sg.set_options(font=('Arial Bold', 16))
     sg.theme('DarkGreen')
-    window1, window2, window3, window4, window5, window6, window7, window8, window9, window10 = make_win1(), None, None, None, None, None, None, None, None, None
-
+    window1, window2, window3, window4, window5 = make_win1(), None, None, None, None
+    window6, window7, window8, window9, window10 = None, None, None, None, None
     while True:  # Event Loop
         window, event, values = sg.read_all_windows()
 
@@ -227,21 +232,22 @@ if __name__ == "__main__":
             plt.figure()
             plt.plot(output["master_chronology"], color="#40B0A6")
             plt.plot(output['Aligned_0'], color="#E1BE6A")
-            plt.legend(['master chronology', 'sample'], fontsize=10)
-            plt.ylabel('detrended sample value', fontsize=16)
-            plt.yticks(fontsize=16)
-            plt.xticks(fontsize=16)
-            plt.xlabel('year', fontsize=16)
+            plt.legend(['master chronology', 'sample'], fontsize=8)
+            plt.ylabel('detrended sample value', fontsize=8)
+            plt.yticks(fontsize=8)
+            plt.xticks(fontsize=8)
+            plt.xlabel('year', fontsize=8)
             plt.grid(True)
-            plt.title("Detrended values of a master chronology and a sample.", fontsize=16)
+            plt.title("Detrended values of a master chronology and a sample.", fontsize=10)
             fig = plt.gcf()
             DPI = fig.get_dpi()
-            fig.set_size_inches(1150 * 2 / float(DPI), 600 / float(DPI))
+            fig.set_size_inches(1150 * 2 / float(DPI), 830 / float(DPI))
             draw_figure_w_toolbar(window6['fig_cv'].TKCanvas, fig, window6['controls_cv'].TKCanvas)
         elif event == "Export to CSV":
+            output.to_csv('crossdating_output.csv')
             window.close()
             window6 = None
-            df.to_csv('crossdating_output.csv')
+            window7 = make_win7()
         elif event == 'Main Menu':
             window.close()
             window5 = None
@@ -257,21 +263,21 @@ if __name__ == "__main__":
             window8 = make_win8()
             # Get the Keys and store them in a list
             labels = list([start_years.most_common()[item][0] for item in
-                           range(len(start_years.most_common(20)))])
+                           range(len(start_years.most_common(15)))])
             labels = [str(label) for label in labels]
             # Get the Values and store them in a list
             values = list([start_years.most_common()[item][1] for item in
-                           range(len(start_years.most_common(20)))])
+                           range(len(start_years.most_common(15)))])
             plt.figure()
             # plt.pie(values, labels=labels, colors=sns.color_palette('Set2'), autopct='%1.1f%%')
             plt.title("Bar chart of all possible start years from crossdating program.", fontsize=10)
-            plt.xlabel("Start year", fontsize=8)
+            plt.xlabel("Start year", fontsize=6)
             plt.ylabel("Counts", fontsize=8)
             plt.bar(labels, values, color="#40B0A6")
             add_labels(labels, values)
             fig2 = plt.gcf()
             DPI2 = fig2.get_dpi()
-            fig2.set_size_inches(1000 * 2 / float(DPI2), 790 / float(DPI2))
+            fig2.set_size_inches(1150 * 2 / float(DPI2), 790 / float(DPI2))
             draw_figure_w_toolbar(window8['fig_cv2'].TKCanvas, fig2, window8['controls_cv2'].TKCanvas)
         elif event == 'Machine Learning Method':
             window.close()
@@ -281,6 +287,7 @@ if __name__ == "__main__":
             window.close()
             window9 = None
             window10 = make_win10()
+            df = helper.rename_dataframe(df)
             i = 1
             training_data = []
             filenames = listdir(values["-FOLDER-"])
