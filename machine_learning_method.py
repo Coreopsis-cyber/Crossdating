@@ -137,10 +137,8 @@ def training_data_for_first_mlp(df):
 def correct_pairs(df):
     """Creates a list of sample and master chronologies that align in the correct position"""
     pair = []
-    col_list = []
     correct = []
     samples = []
-    no_repeat_correct = []
     i = 0
     for col in df.columns:
         col_list = df[col].tolist()
