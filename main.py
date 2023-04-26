@@ -60,7 +60,7 @@ if __name__ == "__main__":
                 "length ")],
             [sg.T("")], [sg.Text("Choose a file: "), sg.Input(), sg.FileBrowse(key="-IN-")],
             [sg.Button("Import"), sg.Button('Exit')]]
-        return sg.Window('Crossdating App', layout, resizable=True,  size=(700, 230), finalize=True)
+        return sg.Window('Crossdating App', layout, resizable=True, size=(700, 230), finalize=True)
 
 
     def make_win3():
@@ -68,7 +68,7 @@ if __name__ == "__main__":
                            "statistical method. Both will give further options to save the \nresults or graph them.")],
                   [sg.Button("Statistical Method"),
                    sg.Button("Machine Learning Method")]]
-        return sg.Window('Crossdating App', layout, resizable=True,  size=(605, 120), finalize=True)
+        return sg.Window('Crossdating App', layout, resizable=True, size=(605, 120), finalize=True)
 
 
     def make_win4():
@@ -86,7 +86,8 @@ if __name__ == "__main__":
                   [
                       [sg.Text(labels[i], size=size), sg.Input(default[i], key=keys[i].split()[0])]
                       for i in range(len(labels))] + [[sg.Push(), sg.Button("Submit")]],
-                  [sg.Text("WARNING: Please make sure the segment size x  consecutive outliers is less than the length of the sample chronology.")]]
+                  [sg.Text(
+                      "WARNING: Please make sure the segment size x  consecutive outliers is less than the length of the sample chronology.")]]
 
         return sg.Window('Crossdating App', layout, resizable=True, size=(1200, 250), finalize=True)
 
@@ -124,8 +125,8 @@ if __name__ == "__main__":
             [sg.Button("New Chronology"),
              sg.Button("Statistical Method"),
              sg.Button("Machine Learning Method")],
-             sg.Button("Exit")]
-        return sg.Window('Crossdating App', layout, resizable=True, size=(605, 120), finalize=True)
+            [sg.Button("Exit")]]
+        return sg.Window('Crossdating App', layout, resizable=True, size=(610, 128), finalize=True)
 
 
     def make_win8():

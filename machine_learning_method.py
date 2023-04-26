@@ -106,7 +106,7 @@ def training_data_for_first_mlp(df):
             size = 10
             step = 1
             length = len(samples1[i])
-            seg = {}
+            seg={}
             seg[0] = ([samples1[i][j: j + size] for j in range(0, len(samples1[i]), step)])
             short2 = []
             for j in range(len(seg[0])):
