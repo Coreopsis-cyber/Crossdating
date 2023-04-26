@@ -2,6 +2,7 @@ import numpy as np
 
 
 def setting_up_training_data(training_data):
+    """Creates the input and output values for the training data."""
     i = 1
     total_input = []
     total_output = []
@@ -15,6 +16,9 @@ def setting_up_training_data(training_data):
 
 
 def correct_training_pairs(training_data):
+    """ Creates the output for the 3rd MLP:
+    Creates a list of outputs where a value of 1 is given to a sample and master chronologies that align in the
+    correct position and a value of 0 is given to a sample and master chronology not correctly aligned """
     i = 1
     correct_pairs_training = []
     for data in training_data:
@@ -26,6 +30,7 @@ def correct_training_pairs(training_data):
 
 
 def training_data_for_first_mlp(df):
+    """Creates the input and output data for the first mlp"""
     samples = []
     samples1 = []
     answer = []
@@ -99,7 +104,7 @@ def training_data_for_first_mlp(df):
                 answer.append(1)
                 for j in range(len(segments[1]) - index):
                     answer.append(0)
-            elif find_element_in_list(samples[i], segments[1]) == None:
+            elif find_element_in_list(samples[i], segments[1]) is None:
                 for j in range(len(segments[1])):
                     answer.append(0)
         elif len(samples1[i]) > 10:
@@ -118,7 +123,7 @@ def training_data_for_first_mlp(df):
             final = [x for x in seg[0] if x not in short2]
 
             for j in range(len(segments[1])):
-                if find_element_in_list(segments[1][j], final) != None:
+                if find_element_in_list(segments[1][j], final) is not None:
 
                     answer.append(1)
                 else:
@@ -130,6 +135,7 @@ def training_data_for_first_mlp(df):
 
 
 def correct_pairs(df):
+    """Creates a list of sample and master chronologies that align in the correct position"""
     pair = []
     col_list = []
     correct = []
@@ -156,6 +162,7 @@ def correct_pairs(df):
 
 
 def find_element_in_list(element, list_element):
+    """Helper method that checks if an element is in a list"""
     try:
         index_element = list_element.index(element)
         return index_element
@@ -164,6 +171,7 @@ def find_element_in_list(element, list_element):
 
 
 def create_pairs(dataframe, section):
+    """Creates segments of master and segment pairs from a dataframe"""
     samples = []
     segments = {}
     segment = {}
@@ -211,6 +219,8 @@ def create_pairs(dataframe, section):
 
 
 def training_data_for_second_mlp(pairs, correct_pairs):
+    """Creates the training data for the second mlp:
+    Creates the output for the second mlp giving segments that overlap by at least 5 years then it is given a value of 1"""
     binary = []
     first_pairs = []
     for j in range(len(correct_pairs)):
@@ -242,6 +252,7 @@ def training_data_for_second_mlp(pairs, correct_pairs):
 
 
 def testing_data_for_second_mlp(pairs, correct_pairs):
+    """This method is only used when debugging the method"""
     binary = []
     found_pairs = []
     i = 0
@@ -274,6 +285,7 @@ def testing_data_for_second_mlp(pairs, correct_pairs):
 
 
 def testing_data_for_third_mlp(pairs, correct_pairs):
+    """This method is only used when debugging the method"""
     binary = []
     for i in range(len(pairs)):
         if pairs[i] in correct_pairs:
@@ -284,6 +296,7 @@ def testing_data_for_third_mlp(pairs, correct_pairs):
 
 
 def training_data_for_third_mlp(pairs, correct_pairs):
+    """Creates a list of outputs for the training data"""
     binary = []
     correct_pairs = [item for sublist in correct_pairs for item in sublist]
     for i in range(len(pairs)):

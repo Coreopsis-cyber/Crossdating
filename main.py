@@ -270,7 +270,6 @@ if __name__ == "__main__":
             values = list([start_years.most_common()[item][1] for item in
                            range(len(start_years.most_common(15)))])
             plt.figure()
-            # plt.pie(values, labels=labels, colors=sns.color_palette('Set2'), autopct='%1.1f%%')
             plt.title("Bar chart of all possible start years from crossdating program.", fontsize=10)
             plt.xlabel("Start year", fontsize=6)
             plt.ylabel("Counts", fontsize=8)
@@ -343,7 +342,6 @@ if __name__ == "__main__":
             correct_pair = machine_learning_method.correct_pairs(df)
             binary_training = machine_learning_method.training_data_for_second_mlp(train_input_pairs,
                                                                                    correct_pair_training)
-            binary = machine_learning_method.testing_data_for_second_mlp(input_pairs, correct_pair)
             x2 = train_input_pairs
             y2 = binary_training
             x2 = pd.Series(x2)
@@ -394,7 +392,6 @@ if __name__ == "__main__":
             inputs3 = inputs2.tolist()
             training_correct = machine_learning_method.training_data_for_third_mlp(training_inputs2,
                                                                                    correct_pair_training)
-            correct2 = machine_learning_method.testing_data_for_third_mlp(inputs2, correct_pair)
             window10['-PBAR2-'].update(current_count=65)
             window10['-OUT2-'].update("Extracting data for the third model...")
             x3 = pd.Series(training_inputs3)
