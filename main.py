@@ -126,7 +126,7 @@ if __name__ == "__main__":
              sg.Button("Statistical Method"),
              sg.Button("Machine Learning Method")],
             [sg.Button("Exit")]]
-        return sg.Window('Crossdating App', layout, resizable=True, size=(610, 128), finalize=True)
+        return sg.Window('Crossdating App', layout, resizable=True, size=(615, 128), finalize=True)
 
 
     def make_win8():
